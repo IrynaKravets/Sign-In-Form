@@ -190,60 +190,61 @@
 
   <script>
     function validateForm() {
-    let valid = true;
-    const fields = ['firstName', 'lastName', 'email', 'userId', 'password', 'confirmPassword'];
+      let valid = true;
+      const fields = ['firstName', 'lastName', 'email', 'userId', 'password', 'confirmPassword'];
 
-    fields.forEach(fieldId => {
-        document.getElementById(fieldId + "Error").innerText = "";
-        document.getElementById(fieldId).classList.remove('input-error');
-    });
+      fields.forEach(fieldId => {
+          document.getElementById(fieldId + "Error").innerText = "";
+          document.getElementById(fieldId).classList.remove('input-error');
+      });
 
-    let firstName = document.getElementById('firstName').value.trim();
-    let lastName = document.getElementById('lastName').value.trim();
-    let email = document.getElementById('email').value.trim();
-    let userId = document.getElementById('userId').value.trim();
-    let password = document.getElementById('password').value;
-    let confirmPassword = document.getElementById('confirmPassword').value;
+      let firstName = document.getElementById('firstName').value.trim();
+      let lastName = document.getElementById('lastName').value.trim();
+      let email = document.getElementById('email').value.trim();
+      let userId = document.getElementById('userId').value.trim();
+      let password = document.getElementById('password').value;
+      let confirmPassword = document.getElementById('confirmPassword').value;
 
-    if (!firstName) {
-        showError('firstName', 'First Name is required');
-        valid = false;
-    }
-    if (!lastName) {
-        showError('lastName', 'Last Name is required');
-        valid = false;
-    }
-    if (!email) {
-        showError('email', 'Email is required');
-        valid = false;
-    } else {
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailPattern.test(email)) {
-        showError('email', 'Please enter a valid email address');
-        valid = false;
-        }
-    }
-    if (!userId) {
-        showError('userId', 'User ID is required');
-        valid = false;
-    }
-    if (!password) {
-        showError('password', 'Password is required');
-        valid = false;
-    }
-    if ((!confirmPassword) || (password !== confirmPassword)) {
-        showError('confirmPassword', 'Passwords do not match.');
-        valid = false;
-    }
+      if (!firstName) {
+          showError('firstName', 'First Name is required');
+          valid = false;
+      }
+      if (!lastName) {
+          showError('lastName', 'Last Name is required');
+          valid = false;
+      }
+      if (!email) {
+          showError('email', 'Email is required');
+          valid = false;
+      } else {
+          const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailPattern.test(email)) {
+          showError('email', 'Please enter a valid email address');
+          valid = false;
+          }
+      }
+      if (!userId) {
+          showError('userId', 'User ID is required');
+          valid = false;
+      }
+      if (!password) {
+          showError('password', 'Password is required');
+          valid = false;
+      }
+      if ((!confirmPassword) || (password !== confirmPassword)) {
+          showError('confirmPassword', 'Passwords do not match.');
+          valid = false;
+      }
 
-    if (valid) {
+      if (valid) {
         document.getElementById("modalOverlay").style.display = "block";
         document.getElementById("successModal").style.display = "block";
+
         document.getElementById("registrationForm").reset();
+
         return false;
-    } else {
-        return false;
-    }
+      }
+
     }
 
     function showError(fieldId, message) {
@@ -259,8 +260,18 @@
     });
 
     function closeModal() {
-    document.getElementById("modalOverlay").style.display = "none";
-    document.getElementById("successModal").style.display = "none";
+      document.getElementById("modalOverlay").style.display = "none";
+      document.getElementById("successModal").style.display = "none";
+
+      setTimeout(() => {
+        const fields = ['firstName', 'lastName', 'email', 'userId', 'password', 'confirmPassword'];
+        fields.forEach(fieldId => {
+          document.getElementById(fieldId + "Error").innerText = ""; // Remove error messages
+          document.getElementById(fieldId).classList.remove('input-error'); // Remove red border
+        });
+
+        document.getElementById("registrationForm").reset();
+      }, 200);
     }
 
   </script>
