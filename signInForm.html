@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration Form</title>
+  <style> 
+
+    .floating-label {
+    position: relative;
+    margin-bottom: 20px;
+    }
+
+    .floating-label input {
+    width: 100%;
+    height: 45px;
+    padding: 12px 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    background: white;
+    transition: all 0.3s ease-in-out;
+    box-sizing: border-box;
+    line-height: normal;
+    }
+
+    .floating-label label {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: #aaa;
+    transition: all 0.3s ease-in-out;
+    background: white;
+    padding: 0 4px;
+    pointer-events: none;
+    }
+
+    .floating-label input:focus + label,
+    .floating-label input:not(:placeholder-shown) + label {
+    top: 0;
+    font-size: 12px;
+    color: #333;
+    }
+
+    .floating-label input::placeholder {
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+    }
+
+
+    .floating-label input:focus::placeholder,
+    .floating-label input:not(:placeholder-shown)::placeholder {
+    opacity: 0;
+    }
+
+    .floating-label input.input-error {
+    border: 2px solid red !important;
+    height: 45px; 
+    padding: 12px 10px;
+    line-height: normal;
+    box-sizing: border-box;
+    }
+
+    .floating-label input.input-error + label {
+    color: red;
+    }
+
+    .error {
+      color: red;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    .input-error {
+      border: 1px solid red !important;
+      
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px;
+      background-color: white;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      padding: 20px;
+      border-radius: 8px;
+    }
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+    }
+
+    .modal button {
+      background-color: green;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      font-size: 14px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .submitButton {
+     text-align: center;
+     margin-top: 20px;
+    }
+
+    .submitButton input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+    }
+
+    .submitButton input[type="submit"]:hover {
+    background-color: #45a049;
+    }
+
+  </style>
+</head>
+<body>
+  <h3>Registration Form</h3>
+
+  <form id="registrationForm" onsubmit="return validateForm();" novalidate>
+    <div class="floating-label">
+      <input type="text" id="firstName" placeholder=" " required>
+      <label for="firstName">First Name</label>
+      <div id="firstNameError" class="error"></div>
+    </div>
+
+    <div class="floating-label">
+      <input type="text" id="lastName" placeholder=" " required>
+      <label for="lastName">Last Name</label>
+      <div id="lastNameError" class="error"></div>
+    </div>
+
+    <div class="floating-label">
+      <input type="email" id="email" placeholder=" " required>
+      <label for="email">Email Address</label>
+      <div id="emailError" class="error"></div>
+    </div>
+
+    <div class="floating-label">
+      <input type="text" id="userId" placeholder=" " required>
+      <label for="userId">User ID</label>
+      <div id="userIdError" class="error"></div>
+    </div>
+
+    <div class="floating-label">
+      <input type="password" id="password" placeholder=" " required>
+      <label for="password">Password</label>
+      <div id="passwordError" class="error"></div>
+    </div>
+
+    <div class="floating-label">
+      <input type="password" id="confirmPassword" placeholder=" " required>
+      <label for="confirmPassword">Confirm Password</label>
+      <div id="confirmPasswordError" class="error"></div>
+    </div>
+
+    <div class="submitButton">
+        <input type="submit" value="Submit" id="submit">
+      </div>      
+
+  <div class="modal-overlay" id="modalOverlay"></div>
+  <div class="modal" id="successModal">
+    <p>Your data has been successfully submitted!</p>
+    <button onclick="closeModal()">OK</button>
+  </div>
+
+  <script>
+    function validateForm() {
+      let valid = true;
+      const fields = ['firstName', 'lastName', 'email', 'userId', 'password', 'confirmPassword'];
+
+      fields.forEach(fieldId => {
+          document.getElementById(fieldId + "Error").innerText = "";
+          document.getElementById(fieldId).classList.remove('input-error');
+      });
+
+      let firstName = document.getElementById('firstName').value.trim();
+      let lastName = document.getElementById('lastName').value.trim();
+      let email = document.getElementById('email').value.trim();
+      let userId = document.getElementById('userId').value.trim();
+      let password = document.getElementById('password').value;
+      let confirmPassword = document.getElementById('confirmPassword').value;
+
+      if (!firstName) {
+          showError('firstName', 'First Name is required');
+          valid = false;
+      }
+      if (!lastName) {
+          showError('lastName', 'Last Name is required');
+          valid = false;
+      }
+      if (!email) {
+          showError('email', 'Email is required');
+          valid = false;
+      } else {
+          const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailPattern.test(email)) {
+          showError('email', 'Please enter a valid email address');
+          valid = false;
+          }
+      }
+      if (!userId) {
+          showError('userId', 'User ID is required');
+          valid = false;
+      }
+      if (!password) {
+          showError('password', 'Password is required');
+          valid = false;
+      }
+      if ((!confirmPassword) || (password !== confirmPassword)) {
+          showError('confirmPassword', 'Passwords do not match.');
+          valid = false;
+      }
+
+      if (valid) {
+        document.getElementById("modalOverlay").style.display = "block";
+        document.getElementById("successModal").style.display = "block";
+
+        document.getElementById("registrationForm").reset();
+
+        return false;
+      }
+
+    }
+
+    function showError(fieldId, message) {
+        document.getElementById(fieldId + "Error").innerText = message;
+        document.getElementById(fieldId).classList.add('input-error');
+    }
+
+    document.querySelectorAll('.floating-label input').forEach(input => {
+        input.addEventListener('input', function () {
+        document.getElementById(this.id + "Error").innerText = "";
+        this.classList.remove('input-error');
+        });
+    });
+
+    function closeModal() {
+      document.getElementById("modalOverlay").style.display = "none";
+      document.getElementById("successModal").style.display = "none";
+
+      setTimeout(() => {
+        const fields = ['firstName', 'lastName', 'email', 'userId', 'password', 'confirmPassword'];
+        fields.forEach(fieldId => {
+          document.getElementById(fieldId + "Error").innerText = ""; // Remove error messages
+          document.getElementById(fieldId).classList.remove('input-error'); // Remove red border
+        });
+
+        document.getElementById("registrationForm").reset();
+      }, 200);
+    }
+
+  </script>
+</body>
+</html>
